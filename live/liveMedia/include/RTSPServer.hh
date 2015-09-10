@@ -103,6 +103,12 @@ protected:
 				     Boolean deliverViaTCP, char const* proxyURLSuffix);
       // used to implement "RTSPClientConnection::handleCmd_REGISTER()"
 
+  virtual Boolean weImplementDEREGISTER(char const* proxyURLSuffix, char*& responseStr);
+  // used to implement "RTSPClientConnection::handleCmd_DEREGISTER()"
+  // Note: "responseStr" is dynamically allocated (or NULL), and should be delete[]d after the call
+  virtual void implementCmd_DEREGISTER(char const* proxyURLSuffix);
+  // used to implement "RTSPClientConnection::handleCmd_DEREGISTER()"
+
   virtual UserAuthenticationDatabase* getAuthenticationDatabaseForCommand(char const* cmdName);
   virtual Boolean specialClientAccessCheck(int clientSocket, struct sockaddr_in& clientAddr,
 					   char const* urlSuffix);
@@ -136,6 +142,17 @@ public: // should be protected, but some old compilers complain otherwise
       Boolean fReuseConnection, fDeliverViaTCP;
       char* fProxyURLSuffix;
     };
+    class ParamsForDEREGISTER {
+	    public:
+		    ParamsForDEREGISTER(RTSPClientConnection* ourConnection, char const* proxyURLSuffix);
+		    virtual ~ParamsForDEREGISTER();
+	    private:
+		    friend class RTSPClientConnection;
+		    RTSPClientConnection* fOurConnection;
+		    char* fProxyURLSuffix;
+    };
+
+
   protected: // redefined virtual functions:
     virtual void handleRequestBytes(int newBytesRead);
 
@@ -156,6 +173,9 @@ public: // should be protected, but some old compilers complain otherwise
 				    Boolean reuseConnection, Boolean deliverViaTCP, char const* proxyURLSuffix);
         // You probably won't need to subclass/reimplement this function;
         //     reimplement "RTSPServer::weImplementREGISTER()" and "RTSPServer::implementCmd_REGISTER()" instead.
+	virtual void handleCmd_DEREGISTER(char const* urlSuffix, char const* fullRequestStr, char const* proxyURLSuffix);
+		// You probably won't need to subclass/reimplement this function;
+		//     reimplement "RTSPServer::weImplementDEREGISTER()" and "RTSPServer::implementCmd_DEREGISTER()" instead.
     virtual void handleCmd_bad();
     virtual void handleCmd_notSupported();
     virtual void handleCmd_notFound();
@@ -182,6 +202,9 @@ public: // should be protected, but some old compilers complain otherwise
       // used to implement RTSP-over-HTTP tunneling
     static void continueHandlingREGISTER(ParamsForREGISTER* params);
     virtual void continueHandlingREGISTER1(ParamsForREGISTER* params);
+
+	static void continueHandlingDEREGISTER(ParamsForDEREGISTER* params);
+	virtual void continueHandlingDEREGISTER1(ParamsForDEREGISTER* params);
 
     // Shortcuts for setting up a RTSP response (prior to sending it):
     void setRTSPResponse(char const* responseStr);
@@ -320,6 +343,8 @@ protected: // redefined virtual functions
   virtual Boolean weImplementREGISTER(char const* proxyURLSuffix, char*& responseStr);
   virtual void implementCmd_REGISTER(char const* url, char const* urlSuffix, int socketToRemoteServer,
 				     Boolean deliverViaTCP, char const* proxyURLSuffix);
+  virtual Boolean weImplementDEREGISTER(char const* proxyURLSuffix, char*& responseStr);
+  virtual void implementCmd_DEREGISTER(char const* proxyURLSuffix);
   virtual UserAuthenticationDatabase* getAuthenticationDatabaseForCommand(char const* cmdName);
 
 private:

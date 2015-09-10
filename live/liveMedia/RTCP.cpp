@@ -415,8 +415,10 @@ void RTCPInstance::incomingReportHandler(RTCPInstance* instance,
 void RTCPInstance::incomingReportHandler1() {
   do {
     if (fNumBytesAlreadyRead >= maxRTCPPacketSize) {
-      envir() << "RTCPInstance error: Hit limit when reading incoming packet over TCP. Increase \"maxRTCPPacketSize\"\n";
-      break;
+    //  envir() << "RTCPInstance error: Hit limit when reading incoming packet over TCP. Increase \"maxRTCPPacketSize\"\n";
+      	memset(fInBuf,0,fNumBytesAlreadyRead);
+	fNumBytesAlreadyRead = 0;
+	break;
     }
 
     unsigned numBytesRead;
