@@ -325,7 +325,7 @@ Boolean RTPInterface::sendRTPorRTCPPacketOverTCP(u_int8_t* packet, unsigned pack
     framingHeader[1] = streamChannelId;
     framingHeader[2] = (u_int8_t) ((packetSize&0xFF00)>>8);
     framingHeader[3] = (u_int8_t) (packetSize&0xFF);
-    if (!sendDataOverTCP(socketNum, framingHeader, 4, True)) break;
+    if (!sendDataOverTCP(socketNum, framingHeader, 4, False)) break;
 
     if (!sendDataOverTCP(socketNum, packet, packetSize, True)) break;
 #ifdef DEBUG_SEND
@@ -342,7 +342,7 @@ Boolean RTPInterface::sendRTPorRTCPPacketOverTCP(u_int8_t* packet, unsigned pack
 }
 
 #ifndef RTPINTERFACE_BLOCKING_WRITE_TIMEOUT_MS
-#define RTPINTERFACE_BLOCKING_WRITE_TIMEOUT_MS 50000
+#define RTPINTERFACE_BLOCKING_WRITE_TIMEOUT_MS 5000
 #endif
 
 Boolean RTPInterface::sendDataOverTCP(int socketNum, u_int8_t const* data, unsigned dataSize, Boolean forceSendToSucceed) {

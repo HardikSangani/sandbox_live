@@ -56,7 +56,7 @@ void usage() {
 int main(int argc, char** argv) {
   // Increase the maximum size of video frames that we can 'proxy' without truncation.
   // (Such frames are unreasonably large; the back-end servers should really not be sending frames this large!)
-  OutPacketBuffer::maxSize = 100000; // bytes
+  OutPacketBuffer::maxSize = 1000000; // bytes
 
   // Begin by setting up our usage environment:
   TaskScheduler* scheduler = BasicTaskScheduler::createNew();

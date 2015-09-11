@@ -23,6 +23,7 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 #include <GroupsockHelper.hh>
 
 ////////// GenericMediaServer implementation //////////
+#define ALLOW_RTSP_SERVER_PORT_REUSE
 
 void GenericMediaServer::addServerMediaSession(ServerMediaSession* serverMediaSession) {
   if (serverMediaSession == NULL) return;
