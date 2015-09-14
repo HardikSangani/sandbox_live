@@ -594,8 +594,9 @@ void ProxyServerMediaSubsession::closeStreamSource(FramedSource* inputSource) {
         envir() << "stream_name" << stream_name << "\n";
 //	sms->fOurMediaServer->deleteServerMediaSession(stream_name);
 //	closeAllClientSessionsForServerMediaSession(proxyURLSuffix);
-
+	if(stream_name != NULL){
 	sms->fOurMediaServer->removeServerMediaSession(stream_name);
+	}
      }
  
   }
