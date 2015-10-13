@@ -36,6 +36,7 @@ extern "C" int initializeWinsockIfNecessary();
 #endif
 #include <stdio.h>
 
+
 // By default, use INADDR_ANY for the sending and receiving interfaces:
 netAddressBits SendingInterfaceAddr = INADDR_ANY;
 netAddressBits ReceivingInterfaceAddr = INADDR_ANY;
@@ -360,9 +361,10 @@ Boolean writeSocket(UsageEnvironment& env,
 void ignoreSigPipeOnSocket(int socketNum) {
   #ifdef USE_SIGNALS
   #ifdef SO_NOSIGPIPE
-  int set_option = 1;
+  int set_option=1;
   setsockopt(socketNum, SOL_SOCKET, SO_NOSIGPIPE, &set_option, sizeof set_option);
   #else
+  fprintf(stderr,"SIGPIPE is ignoring\n");
   signal(SIGPIPE, SIG_IGN);
   #endif
   #endif

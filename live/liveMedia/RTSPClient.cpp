@@ -255,6 +255,10 @@ Boolean RTSPClient::parseRTSPURL(UsageEnvironment& env, char const* url,
     // Parse the URL as "rtsp://[<username>[:<password>]@]<server-address-or-name>[:<port>][/<stream-name>]"
     char const* prefix = "rtsp://";
     unsigned const prefixLength = 7;
+    if(url == NULL){
+      env.setResultMsg("URL is found null\n");
+      break;
+    }
     if (_strncasecmp(url, prefix, prefixLength) != 0) {
       env.setResultMsg("URL is not of the form \"", prefix, "\"");
       break;
